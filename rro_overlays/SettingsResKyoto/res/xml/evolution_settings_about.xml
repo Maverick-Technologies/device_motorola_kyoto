@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Evolver > About for kyoto: Evolution X's About screen with a single contributor row.
+     Uses only this overlay's own resources (overlay XML cannot point at Settings' private
+     resource IDs at runtime). Logo/icons decompiled by tools/xmltree2src.py. -->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/kyoto_about_title">
+
+    <com.android.settingslib.widget.LayoutPreference
+        android:key="evolution_logo"
+        android:clickable="false"
+        android:layout="@layout/kyoto_about_logo" />
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:title="@string/kyoto_about_info" />
+
+    <Preference
+        android:icon="@drawable/kyoto_ic_about"
+        android:title="@string/kyoto_about_website_title"
+        android:summary="@string/kyoto_about_website_summary">
+        <intent android:action="android.intent.action.VIEW" android:data="https://evolution-x.org" />
+    </Preference>
+
+    <Preference
+        android:icon="@drawable/kyoto_ic_discord"
+        android:title="@string/kyoto_about_discord_title"
+        android:summary="@string/kyoto_about_discord_summary">
+        <intent android:action="android.intent.action.VIEW" android:data="https://discord.gg/3qbSZHx" />
+    </Preference>
+
+    <Preference
+        android:icon="@drawable/kyoto_ic_twitter"
+        android:title="@string/kyoto_about_x_title"
+        android:summary="@string/kyoto_about_x_summary">
+        <intent android:action="android.intent.action.VIEW" android:data="https://x.com/EvolutionXROM" />
+    </Preference>
+
+    <Preference
+        android:icon="@drawable/kyoto_ic_github"
+        android:title="@string/kyoto_about_github_title"
+        android:summary="@string/kyoto_about_github_summary">
+        <intent android:action="android.intent.action.VIEW" android:data="https://github.com/Evolution-X" />
+    </Preference>
+
+    <PreferenceCategory
+        android:key="contributors"
+        android:title="@string/kyoto_about_contributors_title">
+
+        <Preference
+            android:title="@string/kyoto_about_maintainer_name"
+            android:summary="@string/kyoto_about_maintainer_role">
+            <intent android:action="android.intent.action.VIEW" android:data="https://github.com/YashDayani" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>
