@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- About page: device build maintainer for kyoto. The Evolution X founder credits
-         (about_contributor_*) are kept as they are. -->
+    <!-- Evolver > About contributors: kyoto maintainer first, then the projects this build is
+         based on. -->
+    <string name="about_contributor_1_title" translatable="false">Yash Dayani</string>
+    <string name="about_contributor_1_summary" translatable="false">Developer &amp; Maintainer</string>
+    <string name="about_contributor_2_title" translatable="false">Evolution X</string>
+    <string name="about_contributor_2_summary" translatable="false">Base ROM</string>
+    <string name="about_contributor_3_title" translatable="false">LineageOS &amp; TrebleDroid</string>
+    <string name="about_contributor_3_summary" translatable="false">Platform &amp; device support</string>
+
+    <!-- Android version screen: device build maintainer for kyoto. -->
     <string name="build_maintainer" translatable="false">Developer &amp; Maintainer</string>
     <string name="build_maintainer_summary" translatable="false">Yash Dayani</string>
     <string name="build_maintainer_donate_url" translatable="false">https://github.com/YashDayani</string>
