@@ -47,6 +47,10 @@ PRODUCT_PACKAGES += \
     SettingsResKyoto \
     SystemUIResKyoto
 
+# Moto gestures: chop chop flashlight, peek wake, double tap to wake
+PRODUCT_PACKAGES += \
+    KyotoActions
+
 # Refresh rate setting (Settings > Display > Refresh rate: Adaptive / 60 Hz / 90 Hz)
 PRODUCT_PACKAGES += \
     KyotoRefreshRate

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="org.lineageos.kyoto.actions">
+        <permission name="android.permission.TURN_SCREEN_ON" />
+    </privapp-permissions>
+</permissions>

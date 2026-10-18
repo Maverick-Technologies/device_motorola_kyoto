@@ -11,6 +11,11 @@ on post-fs-data
     # SIGSEGV in createScreenCaptureOutput, UI restart loop at the lock screen.
     setprop debug.renderengine.backend skiaglthreaded
 
+# FocalTech touch gesture mode is off unless Moto software enables it; without it the
+# dt-gesture (double tap) sensor never fires. KyotoActions handles the wake.
+on boot
+    write /sys/devices/platform/11d01000.i2c7/i2c-7/7-0038/fts_gesture_mode 1
+
 # Vendor android.hardware.nfc@1.2-service.rc only starts the NXP HAL when
 # ro.build.version.release=13. Same triggers, without the version gate.
 on boot && property:ro.vendor.hw.nfc=nxp
