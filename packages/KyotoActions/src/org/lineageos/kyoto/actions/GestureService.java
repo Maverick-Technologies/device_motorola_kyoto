@@ -19,7 +19,7 @@ import android.util.Log;
 /**
  * Moto gestures for kyoto on Android 15, driven by the stock vendor's Motorola sensors:
  *   ChopChop (com.motorola.sensor.chopchop)  -> toggle flashlight
- *   Motoglance (com.motorola.sensor.glance)  -> wake the screen briefly (peek)
+ *   Motoglance (com.motorola.sensor.glance)  -> ambient display pulse (peek)
  *   dt-gesture (com.motorola.sensor.double_tap) -> wake the screen (double tap to wake)
  * Twist for camera is handled by the framework (config_cameraLaunchGestureSensorStringType).
  * Each one can be switched off on the Moto Actions page (see Gestures).
@@ -31,7 +31,9 @@ public class GestureService extends Service {
     private static final String GLANCE = "com.motorola.sensor.glance";
     private static final String DOUBLE_TAP = "com.motorola.sensor.double_tap";
     private static final String STOWED = "com.motorola.sensor.stowed";
-    private static final long PEEK_MS = 5000;
+    // SystemUI DozeTriggers turns this into an ambient pulse (clock + notifications). It is a
+    // protected broadcast; this app may send it because it is a persistent system app.
+    private static final String DOZE_PULSE = "com.android.systemui.doze.pulse";
     private static final long DEBOUNCE_MS = 1000;
 
     private SensorManager mSensors;
@@ -121,7 +123,8 @@ public class GestureService extends Service {
 
     private void onPeek(String why) {
         if (!Gestures.isPeekEnabled(this) || mPower.isInteractive() || mStowed) return;
-        wake(why, PEEK_MS);
+        sendBroadcast(new Intent(DOZE_PULSE).setPackage("com.android.systemui"));
+        Log.i(TAG, why + " -> ambient pulse");
     }
 
     /** Turns the screen on; timeoutMs > 0 releases after that, letting it time out normally. */
