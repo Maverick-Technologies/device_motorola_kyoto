@@ -5,4 +5,7 @@
     <string name="build_maintainer" translatable="false">Developer &amp; Maintainer</string>
     <string name="build_maintainer_summary" translatable="false">Yash Dayani</string>
     <string name="build_maintainer_donate_url" translatable="false">https://github.com/YashDayani</string>
+
+    <!-- Evolution X About page intro, with the kyoto maintainer credit added. -->
+    <string name="about_info" translatable="false">Evolution X aims to provide users with a Pixel-like feel at first glance, with additional features at your disposal.\n\nBuilt for the motorola edge 20 fusion by Yash Dayani — Developer &amp; Maintainer</string>
 </resources>
