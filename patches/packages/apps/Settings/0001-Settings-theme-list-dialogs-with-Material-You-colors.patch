@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Yash Dayani <52958495+YashDayani@users.noreply.github.com>
+Date: Sun, 18 Oct 2026 14:18:04 +0530
+Subject: [PATCH] Settings: theme list dialogs with Material You colors
+
+Theme.AlertDialog (used by every list popup in Settings sub-pages,
+including Evolver) inherits AppCompat's dialog without an accent or
+background, so the popups showed AppCompat's teal radio buttons on a flat
+grey surface. Use the same accent and surface as
+Theme.AlertDialog.SettingsLib.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ res/values/themes.xml | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/res/values/themes.xml b/res/values/themes.xml
+index e512f75..bbf839d 100644
+--- a/res/values/themes.xml
++++ b/res/values/themes.xml
+@@ -129,6 +129,11 @@
+         <item name="android:windowTitleStyle">@*android:style/DialogWindowTitle.DeviceDefault</item>
+         <item name="android:textAppearanceMedium">@style/TextAppearance.DialogMessage</item>
+         <item name="buttonBarButtonStyle">@*android:style/Widget.DeviceDefault.Button.ButtonBar.AlertDialog</item>
++
++        <!-- Material You accent and surface, as in Theme.AlertDialog.SettingsLib. Without them
++             AppCompat falls back to teal radio buttons on a flat grey dialog. -->
++        <item name="colorAccent">@color/settingslib_dialog_accent</item>
++        <item name="android:colorBackground">@color/settingslib_dialog_background</item>
+     </style>
+ 
+ 
+-- 
+2.54.0 (Apple Git-157)
+
