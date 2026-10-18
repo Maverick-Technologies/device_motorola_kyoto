@@ -2,5 +2,6 @@
 <permissions>
     <privapp-permissions package="org.lineageos.kyoto.actions">
         <permission name="android.permission.TURN_SCREEN_ON" />
+        <permission name="android.permission.WRITE_SECURE_SETTINGS" />
     </privapp-permissions>
 </permissions>

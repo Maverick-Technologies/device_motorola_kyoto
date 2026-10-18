@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kyoto Actions</string>
+    <string name="app_name">Moto Actions</string>
+    <string name="title">Moto Actions</string>
+    <string name="summary">Quick gestures for flashlight, camera and screen</string>
+    <string name="description">Use simple motions to get things done without unlocking or searching for buttons.</string>
+    <string name="chop_title">Fast flashlight</string>
+    <string name="chop_summary">Make a chopping motion twice to turn the flashlight on or off</string>
+    <string name="twist_title">Quick capture</string>
+    <string name="twist_summary">Twist your wrist twice to open the camera</string>
+    <string name="peek_title">Peek display</string>
+    <string name="peek_summary">Wake the screen briefly when you pick up the phone or wave over it</string>
+    <string name="double_tap_title">Double tap to wake</string>
+    <string name="double_tap_summary">Double-tap the screen to turn it on</string>
+    <string name="navigate_up">Navigate up</string>
 </resources>

@@ -14,7 +14,6 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.provider.Settings;
 import android.util.Log;
 
 /**
@@ -23,6 +22,7 @@ import android.util.Log;
  *   Motoglance (com.motorola.sensor.glance)  -> wake the screen briefly (peek)
  *   dt-gesture (com.motorola.sensor.double_tap) -> wake the screen (double tap to wake)
  * Twist for camera is handled by the framework (config_cameraLaunchGestureSensorStringType).
+ * Each one can be switched off on the Moto Actions page (see Gestures).
  */
 public class GestureService extends Service {
 
@@ -59,9 +59,7 @@ public class GestureService extends Service {
             } else if (GLANCE.equals(type)) {
                 onPeek("glance");
             } else if (DOUBLE_TAP.equals(type)) {
-                if (Settings.Secure.getInt(getContentResolver(), "double_tap_to_wake", 1) == 1) {
-                    wake("double tap", 0);
-                }
+                if (Gestures.isDoubleTapEnabled(GestureService.this)) wake("double tap", 0);
             } else if (STOWED.equals(type)) {
                 mStowed = e.values.length > 0 && e.values[0] > 0.5f;
             }
@@ -109,6 +107,7 @@ public class GestureService extends Service {
 
     private void onChop() {
         long now = SystemClock.elapsedRealtime();
+        if (!Gestures.isChopEnabled(this)) return;
         if (now - mLastChop < DEBOUNCE_MS || mTorchId == null) return;
         mLastChop = now;
         try {
@@ -121,7 +120,7 @@ public class GestureService extends Service {
     }
 
     private void onPeek(String why) {
-        if (mPower.isInteractive() || mStowed) return;
+        if (!Gestures.isPeekEnabled(this) || mPower.isInteractive() || mStowed) return;
         wake(why, PEEK_MS);
     }
 

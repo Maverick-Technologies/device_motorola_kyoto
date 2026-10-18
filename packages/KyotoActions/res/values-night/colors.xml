@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings page surface: Material You neutral, dark theme -->
+    <color name="page_background">@android:color/system_neutral1_900</color>
+    <bool name="light_bars">false</bool>
+</resources>

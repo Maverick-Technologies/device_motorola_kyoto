@@ -2,7 +2,8 @@
 // SPDX-FileCopyrightText: The LineageOS Project
 // SPDX-License-Identifier: Apache-2.0
 //
-// Moto gestures for kyoto: chop chop flashlight, peek wake, double tap to wake.
+// Moto gestures for kyoto: chop chop flashlight, peek wake, double tap to wake, plus the
+// Moto Actions page (Settings > System > Gestures) with a switch for each and for twist.
 //
 
 android_app {

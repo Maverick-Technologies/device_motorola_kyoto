@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings > System > Gestures > Moto Actions: Pixel-style page with one switch per gesture. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/navigate_up"
+        android:src="@drawable/ic_arrow_back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="28dp"
+                android:text="@string/title"
+                android:textSize="36sp"
+                android:fontFamily="google-sans"
+                android:textColor="?android:attr/textColorPrimary"
+                android:accessibilityHeading="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/description"
+                android:textSize="14sp"
+                android:fontFamily="google-sans-text"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:clipToOutline="true">
+                <LinearLayout android:id="@+id/row_chop" style="@style/MotoActions.Row">
+                    <ImageView style="@style/MotoActions.Icon" android:src="@drawable/ic_flashlight" />
+                    <LinearLayout style="@style/MotoActions.Text">
+                        <TextView style="@style/MotoActions.RowTitle" android:text="@string/chop_title" />
+                        <TextView style="@style/MotoActions.RowSummary" android:text="@string/chop_summary" />
+                    </LinearLayout>
+                    <Switch android:id="@+id/switch_chop" style="@style/MotoActions.Switch" />
+                </LinearLayout>
+                <View android:layout_width="match_parent" android:layout_height="2dp" android:background="@color/page_background" />
+                <LinearLayout android:id="@+id/row_twist" style="@style/MotoActions.Row">
+                    <ImageView style="@style/MotoActions.Icon" android:src="@drawable/ic_twist" />
+                    <LinearLayout style="@style/MotoActions.Text">
+                        <TextView style="@style/MotoActions.RowTitle" android:text="@string/twist_title" />
+                        <TextView style="@style/MotoActions.RowSummary" android:text="@string/twist_summary" />
+                    </LinearLayout>
+                    <Switch android:id="@+id/switch_twist" style="@style/MotoActions.Switch" />
+                </LinearLayout>
+                <View android:layout_width="match_parent" android:layout_height="2dp" android:background="@color/page_background" />
+                <LinearLayout android:id="@+id/row_peek" style="@style/MotoActions.Row">
+                    <ImageView style="@style/MotoActions.Icon" android:src="@drawable/ic_peek" />
+                    <LinearLayout style="@style/MotoActions.Text">
+                        <TextView style="@style/MotoActions.RowTitle" android:text="@string/peek_title" />
+                        <TextView style="@style/MotoActions.RowSummary" android:text="@string/peek_summary" />
+                    </LinearLayout>
+                    <Switch android:id="@+id/switch_peek" style="@style/MotoActions.Switch" />
+                </LinearLayout>
+                <View android:layout_width="match_parent" android:layout_height="2dp" android:background="@color/page_background" />
+                <LinearLayout android:id="@+id/row_double_tap" style="@style/MotoActions.Row">
+                    <ImageView style="@style/MotoActions.Icon" android:src="@drawable/ic_double_tap" />
+                    <LinearLayout style="@style/MotoActions.Text">
+                        <TextView style="@style/MotoActions.RowTitle" android:text="@string/double_tap_title" />
+                        <TextView style="@style/MotoActions.RowSummary" android:text="@string/double_tap_summary" />
+                    </LinearLayout>
+                    <Switch android:id="@+id/switch_double_tap" style="@style/MotoActions.Switch" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
