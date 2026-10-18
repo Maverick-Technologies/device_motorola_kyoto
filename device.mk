@@ -41,6 +41,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/init.kyoto.rc:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/init/init.kyoto.rc
 
+# Off-mode charging: AOSP charger with the stock vendor health HAL (verified on device).
+# Stock kpoc_charger is not shipped; it needs libshowlogo/libsuspend from stock system.
+
 # Overlays (runtime resource overlays in rro_overlays/)
 PRODUCT_PACKAGES += \
     FrameworksResKyoto \
