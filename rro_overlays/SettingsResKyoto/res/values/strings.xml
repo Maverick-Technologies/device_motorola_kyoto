@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- About page: device build maintainer for kyoto. The Evolution X founder credits
+         (about_contributor_*) are kept as they are. -->
+    <string name="build_maintainer" translatable="false">Developer &amp; Maintainer</string>
+    <string name="build_maintainer_summary" translatable="false">Yash Dayani</string>
+    <string name="build_maintainer_donate_url" translatable="false">https://github.com/YashDayani</string>
+</resources>
