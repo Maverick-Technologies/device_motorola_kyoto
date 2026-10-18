@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stand-in for Motorola's MotorolaSettingsProvider (android.uid.system, so it cannot be
+     installed on this ROM). Moto apps read and write their settings through the moto-settings
+     library, which talks to this authority; without it they crash with a null provider. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.lineageos.kyoto.motosettings">
+
+    <application
+        android:label="@string/app_name"
+        android:allowBackup="false"
+        android:forceQueryable="true"
+        android:persistent="false">
+
+        <provider
+            android:name=".MotoSettingsProvider"
+            android:authorities="com.motorola.android.providers.settings"
+            android:exported="true"
+            android:multiprocess="false"
+            android:initOrder="100" />
+    </application>
+</manifest>

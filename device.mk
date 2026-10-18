@@ -75,5 +75,12 @@ PRODUCT_SOONG_NAMESPACES += \
 TARGET_USES_MOTCAMERA4 := true
 $(call inherit-product-if-exists, vendor/motorola/MotCamera4-kyoto/motcamera4.mk)
 
+# Motorola apps: FM Radio, Moto Audio, per-app volume, recorder, aptX, Gametime, Spaces,
+# screenshot editor, Time & Weather, live wallpaper, Face Unlock. KyotoMotoSettings stands in
+# for Motorola's settings provider (android.uid.system on stock), which these apps need.
+$(call inherit-product-if-exists, vendor/motorola/motoapps-kyoto/motoapps.mk)
+PRODUCT_PACKAGES += \
+    KyotoMotoSettings
+
 # Prebuilt vendor tree
 $(call inherit-product, vendor/motorola/kyoto/kyoto-vendor.mk)
