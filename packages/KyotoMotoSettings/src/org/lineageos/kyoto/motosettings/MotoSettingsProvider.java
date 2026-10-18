@@ -1,13 +1,18 @@
 package org.lineageos.kyoto.motosettings;
 
+import android.Manifest;
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.Process;
 
 import java.util.List;
 
@@ -16,6 +21,9 @@ import java.util.List;
  * system}), speaking the protocol of com.motorola.android.provider.MotorolaSettings: call()
  * with GET_/PUT_/RESET_ + table, the setting name as arg and the value in "value", plus
  * query/insert fallbacks. Generation tracking is not offered, so clients do not cache.
+ *
+ * Reads are open, as on stock. Writes are limited to apps preinstalled on the system image
+ * (the Moto apps, several of which are not privileged) or holding WRITE_SECURE_SETTINGS.
  */
 public class MotoSettingsProvider extends ContentProvider {
 
@@ -69,6 +77,29 @@ public class MotoSettingsProvider extends ContentProvider {
         }
     }
 
+    private void enforceWrite() {
+        int uid = Binder.getCallingUid();
+        if (uid == Process.myUid() || uid < Process.FIRST_APPLICATION_UID) return;
+        if (getContext().checkCallingPermission(Manifest.permission.WRITE_SECURE_SETTINGS)
+                == PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        PackageManager pm = getContext().getPackageManager();
+        String[] packages = pm.getPackagesForUid(uid);
+        if (packages != null) {
+            for (String pkg : packages) {
+                try {
+                    if ((pm.getApplicationInfo(pkg, 0).flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                        return;
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    // keep checking the other packages of this uid
+                }
+            }
+        }
+        throw new SecurityException("uid " + uid + " may not change Motorola settings");
+    }
+
     private void put(String table, String name, String value) {
         ContentValues values = new ContentValues();
         values.put(COL_NAME, name);
@@ -93,9 +124,11 @@ public class MotoSettingsProvider extends ContentProvider {
                 return result;
             }
             case "PUT":
+                enforceWrite();
                 put(table, arg, extras != null ? extras.getString(KEY_VALUE) : null);
                 return new Bundle();
             case "RESET":
+                enforceWrite();
                 return new Bundle();
             default:
                 return null;
@@ -123,6 +156,7 @@ public class MotoSettingsProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         String table = tableOf(uri);
         if (table == null || values == null || values.getAsString(COL_NAME) == null) return null;
+        enforceWrite();
         String name = values.getAsString(COL_NAME);
         put(table, name, values.getAsString(COL_VALUE));
         return Uri.withAppendedPath(uri, name);
@@ -137,6 +171,7 @@ public class MotoSettingsProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         String table = tableOf(uri);
         if (table == null) return 0;
+        enforceWrite();
         return mDb.getWritableDatabase().delete(table, selection, selectionArgs);
     }
 
