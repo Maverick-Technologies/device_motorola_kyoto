@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Motorola's vendor overlay sets these to Android 12 names ("wifi,cell,..."). Android 15
+         has a single "internet" tile and drops unknown names, so Wi-Fi vanished from Quick
+         Settings. Values below are Android 15 SystemUI defaults, plus nfc in the stock list.
+         wifi and cell are kept selectable for ROMs that ship separate tiles (EvoX/TrebleDroid);
+         AOSP SystemUI ignores specs it doesn't know. -->
+    <string name="quick_settings_tiles_default" translatable="false">internet,bt,flashlight,dnd,alarm,airplane,controls,wallet,rotation,battery,cast,screenrecord,mictoggle,cameratoggle,custom(com.android.permissioncontroller/.permission.service.v33.SafetyCenterQsTileService)</string>
+    <string name="quick_settings_tiles_stock" translatable="false">internet,wifi,cell,bt,flashlight,dnd,alarm,airplane,controls,wallet,rotation,battery,cast,screenrecord,mictoggle,cameratoggle,location,hotspot,inversion,saver,dark,work,night,reverse,reduce_brightness,qr_code_scanner,onehanded,color_correction,dream,font_scaling,record_issue,hearing_devices,notes,nfc</string>
+</resources>

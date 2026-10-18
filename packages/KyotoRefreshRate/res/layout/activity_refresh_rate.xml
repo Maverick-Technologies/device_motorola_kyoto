@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pixel-style radio settings page: back arrow, large title, description, options, footer. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/navigate_up"
+        android:src="@drawable/ic_arrow_back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="28dp"
+                android:text="@string/refresh_rate_title"
+                android:textSize="36sp"
+                android:fontFamily="google-sans"
+                android:textColor="?android:attr/textColorPrimary"
+                android:accessibilityHeading="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/refresh_rate_description"
+                android:textSize="14sp"
+                android:fontFamily="google-sans-text"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <LinearLayout android:id="@+id/row_adaptive" style="@style/RefreshRate.Row">
+                <RadioButton android:id="@+id/radio_adaptive" style="@style/RefreshRate.Radio" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView style="@style/RefreshRate.RowTitle" android:text="@string/mode_adaptive" />
+                    <TextView style="@style/RefreshRate.RowSummary" android:text="@string/mode_adaptive_desc" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/row_60" style="@style/RefreshRate.Row">
+                <RadioButton android:id="@+id/radio_60" style="@style/RefreshRate.Radio" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView style="@style/RefreshRate.RowTitle" android:text="@string/mode_60" />
+                    <TextView style="@style/RefreshRate.RowSummary" android:text="@string/mode_60_desc" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/row_90" style="@style/RefreshRate.Row">
+                <RadioButton android:id="@+id/radio_90" style="@style/RefreshRate.Radio" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView style="@style/RefreshRate.RowTitle" android:text="@string/mode_90" />
+                    <TextView style="@style/RefreshRate.RowSummary" android:text="@string/mode_90_desc" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/ic_info"
+                android:importantForAccessibility="no" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/footer"
+                android:textSize="14sp"
+                android:fontFamily="google-sans-text"
+                android:textColor="?android:attr/textColorSecondary" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

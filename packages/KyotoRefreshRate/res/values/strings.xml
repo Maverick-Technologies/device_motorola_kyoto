@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Refresh rate</string>
+    <string name="refresh_rate_title">Refresh rate</string>
+    <string name="refresh_rate_summary">Adaptive</string>
+    <string name="refresh_rate_description">Choose how often the screen refreshes. A higher refresh rate makes scrolling and animations look smoother.</string>
+    <string name="mode_adaptive">Adaptive</string>
+    <string name="mode_adaptive_desc">Switches between 60 Hz and 90 Hz depending on what\'s on screen. Best balance of smoothness and battery.</string>
+    <string name="mode_60">60 Hz</string>
+    <string name="mode_60_desc">Uses the least battery</string>
+    <string name="mode_90">90 Hz</string>
+    <string name="mode_90_desc">Always smoothest, uses more battery</string>
+    <string name="footer">A higher refresh rate can increase battery usage.</string>
+    <string name="navigate_up">Navigate up</string>
+</resources>

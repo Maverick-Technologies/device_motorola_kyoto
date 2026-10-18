@@ -1,0 +1,23 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+# kyoto fixes for running Android 15 on the stock Android 13 (FCM 5) vendor.
+#
+
+on post-fs-data
+    # Vendor build.prop sets debug.renderengine.backend=skiagl (non-threaded). On Android 15
+    # SurfaceFlinger then defers screenshot composition until after the RenderArea is freed:
+    # SIGSEGV in createScreenCaptureOutput, UI restart loop at the lock screen.
+    setprop debug.renderengine.backend skiaglthreaded
+
+# Vendor android.hardware.nfc@1.2-service.rc only starts the NXP HAL when
+# ro.build.version.release=13. Same triggers, without the version gate.
+on boot && property:ro.vendor.hw.nfc=nxp
+    start vendor.nfc_hal_service
+
+on boot && property:ro.vendor.hw.nfc=ese_nxp
+    start vendor.nfc_hal_service
+
+on boot && property:ro.vendor.hw.nfc=true
+    start vendor.nfc_hal_service

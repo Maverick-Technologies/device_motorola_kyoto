@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The Refresh rate page (Adaptive / 60 Hz / 90 Hz) replaces the on/off
+         "Smooth display" switch; both write peak_refresh_rate. -->
+    <bool name="config_show_smooth_display">false</bool>
+</resources>

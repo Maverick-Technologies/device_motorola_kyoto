@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Motorola sets a low-brightness "flicker zone": below 48/255 screen brightness
+         (any ambient light) the display manager pins 60 Hz above the user's choice, so the
+         90 Hz setting dropped to 60. Maverick turns the zone off: 0 disables it, and the
+         empty threshold lists leave nothing to observe. -->
+    <integer name="config_defaultRefreshRateInZone">0</integer>
+    <integer-array name="config_brightnessThresholdsOfPeakRefreshRate" />
+    <integer-array name="config_ambientThresholdsOfPeakRefreshRate" />
+</resources>

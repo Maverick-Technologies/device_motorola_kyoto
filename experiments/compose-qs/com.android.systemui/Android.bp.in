@@ -1,0 +1,10 @@
+// Copied to build/release/aconfig/bp1a/com.android.systemui/Android.bp by the build scripts
+// (named .in here so Soong does not load it from the device tree).
+
+aconfig_values {
+    name: "aconfig-values-platform_build_release-bp1a-com.android.systemui-all",
+    package: "com.android.systemui",
+    srcs: [
+        "*_flag_values.textproto",
+    ],
+}

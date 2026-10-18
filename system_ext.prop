@@ -1,0 +1,3 @@
+# MediaTek RIL (matches stock)
+vendor.rild.libpath=mtk-ril.so
+vendor.rild.libargs=-d /dev/ttyC0
