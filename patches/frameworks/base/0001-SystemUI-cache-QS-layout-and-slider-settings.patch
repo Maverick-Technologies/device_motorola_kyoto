@@ -1,0 +1,284 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Yash Dayani <52958495+YashDayani@users.noreply.github.com>
+Date: Sun, 18 Oct 2026 13:01:37 +0530
+Subject: [PATCH] SystemUI: cache QS layout and slider settings
+
+QSAnimator.setPosition, QSImpl.setQsExpansion and the QS brightness/volume
+sliders read Settings.System through TileUtils and VerticalSlider on every
+shade expansion frame. getIntForUser(..., USER_CURRENT) bypasses the client
+NameValueCache, so each read was a synchronous binder call into
+system_server: ~50 per shade pull, up to 58 inside a single frame, and the
+main cause of 50-100 ms frames when pulling down the shade on kyoto.
+
+Keep these values in a process-wide cache that is dropped on any
+Settings.System change or user switch.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ .../android/systemui/qs/QsSettingsCache.java  | 108 ++++++++++++++++++
+ .../com/android/systemui/qs/TileUtils.java    |  60 +++-------
+ .../com/android/systemui/qs/VerticalSlider.kt |   4 +-
+ 3 files changed, 126 insertions(+), 46 deletions(-)
+ create mode 100644 packages/SystemUI/src/com/android/systemui/qs/QsSettingsCache.java
+
+diff --git a/packages/SystemUI/src/com/android/systemui/qs/QsSettingsCache.java b/packages/SystemUI/src/com/android/systemui/qs/QsSettingsCache.java
+new file mode 100644
+index 0000000..32a44ba
+--- /dev/null
++++ b/packages/SystemUI/src/com/android/systemui/qs/QsSettingsCache.java
+@@ -0,0 +1,108 @@
++/*
++ * Copyright (C) 2026 Yash Dayani
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package com.android.systemui.qs;
++
++import android.content.BroadcastReceiver;
++import android.content.Context;
++import android.content.Intent;
++import android.content.IntentFilter;
++import android.database.ContentObserver;
++import android.net.Uri;
++import android.os.Handler;
++import android.os.Looper;
++import android.os.UserHandle;
++import android.provider.Settings;
++
++import java.util.concurrent.ConcurrentHashMap;
++import java.util.concurrent.atomic.AtomicInteger;
++
++/**
++ * Process-wide cache for the Settings.System values the QS customisations read while the
++ * shade is moving (QSAnimator.setPosition, QSImpl.setQsExpansion, slider paint/tint).
++ *
++ * Settings.System.getIntForUser(..., USER_CURRENT) is never served from the client-side
++ * NameValueCache (it only caches for myUserId()), so every read was a synchronous binder
++ * call into system_server, ~50 per shade pull. Values are kept here and dropped whenever
++ * any System setting changes or the foreground user switches.
++ */
++public final class QsSettingsCache {
++
++    private static final String NULL = new String("null");
++    private static final ConcurrentHashMap<String, String> sValues = new ConcurrentHashMap<>();
++    private static final AtomicInteger sGeneration = new AtomicInteger();
++    private static volatile boolean sRegistered;
++
++    private QsSettingsCache() {}
++
++    public static int getInt(Context context, String key, int def) {
++        String value = getString(context, key);
++        if (value == null) return def;
++        try {
++            return Integer.parseInt(value);
++        } catch (NumberFormatException e) {
++            return def;
++        }
++    }
++
++    public static String getString(Context context, String key) {
++        ensureRegistered(context);
++        String value = sValues.get(key);
++        if (value == null) {
++            int generation = sGeneration.get();
++            value = Settings.System.getStringForUser(context.getContentResolver(), key,
++                    UserHandle.USER_CURRENT);
++            // Only cache once the observer is live and nothing changed during the read.
++            if (sRegistered && generation == sGeneration.get()) {
++                sValues.put(key, value == null ? NULL : value);
++            }
++            return value;
++        }
++        return value == NULL ? null : value;
++    }
++
++    private static void invalidate() {
++        sGeneration.incrementAndGet();
++        sValues.clear();
++    }
++
++    private static void ensureRegistered(Context context) {
++        if (sRegistered) return;
++        synchronized (QsSettingsCache.class) {
++            if (sRegistered) return;
++            Context app = context.getApplicationContext();
++            if (app == null) app = context;
++            Handler handler = new Handler(Looper.getMainLooper());
++            try {
++                app.getContentResolver().registerContentObserver(Settings.System.CONTENT_URI,
++                        true /* notifyForDescendants */, new ContentObserver(handler) {
++                            @Override
++                            public void onChange(boolean selfChange, Uri uri) {
++                                invalidate();
++                            }
++                        }, UserHandle.USER_ALL);
++                app.registerReceiverForAllUsers(new BroadcastReceiver() {
++                    @Override
++                    public void onReceive(Context c, Intent intent) {
++                        invalidate();
++                    }
++                }, new IntentFilter(Intent.ACTION_USER_SWITCHED), null, handler);
++                sRegistered = true;
++            } catch (RuntimeException e) {
++                // No observer (e.g. a restricted context): keep reading uncached.
++            }
++        }
++    }
++}
+diff --git a/packages/SystemUI/src/com/android/systemui/qs/TileUtils.java b/packages/SystemUI/src/com/android/systemui/qs/TileUtils.java
+index a16216b..9dd5a79 100644
+--- a/packages/SystemUI/src/com/android/systemui/qs/TileUtils.java
++++ b/packages/SystemUI/src/com/android/systemui/qs/TileUtils.java
+@@ -20,7 +20,6 @@ package com.android.systemui.qs;
+ import android.content.Context;
+ import android.content.res.Configuration;
+ import android.content.res.Resources;
+-import android.os.UserHandle;
+ import android.provider.Settings;
+ 
+ import com.android.systemui.res.R;
+@@ -47,13 +46,11 @@ public class TileUtils {
+         final Resources res = context.getResources();
+         int value = QS_COLUMNS_MIN;
+         if (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+-            value = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QS_LAYOUT_COLUMNS,
+-                    resourceCount, UserHandle.USER_CURRENT);
++            value = QsSettingsCache.getInt(context, Settings.System.QS_LAYOUT_COLUMNS,
++                    resourceCount);
+         } else {
+-            value = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QS_LAYOUT_COLUMNS_LANDSCAPE,
+-                    resourceCount, UserHandle.USER_CURRENT);
++            value = QsSettingsCache.getInt(context, Settings.System.QS_LAYOUT_COLUMNS_LANDSCAPE,
++                    resourceCount);
+         }
+         return Math.max(QS_COLUMNS_MIN, value);
+     }
+@@ -63,19 +60,11 @@ public class TileUtils {
+         int value = QS_ROWS_MIN;
+         int valueQQS = QS_ROWS_MIN;
+         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+-            value = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QS_LAYOUT_ROWS,
+-                    4, UserHandle.USER_CURRENT);
+-            valueQQS = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QQS_LAYOUT_ROWS,
+-                    2, UserHandle.USER_CURRENT);
++            value = QsSettingsCache.getInt(context, Settings.System.QS_LAYOUT_ROWS, 4);
++            valueQQS = QsSettingsCache.getInt(context, Settings.System.QQS_LAYOUT_ROWS, 2);
+         } else {
+-            value = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QS_LAYOUT_ROWS_LANDSCAPE,
+-                    2, UserHandle.USER_CURRENT);
+-            valueQQS = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QQS_LAYOUT_ROWS_LANDSCAPE,
+-                    1, UserHandle.USER_CURRENT);
++            value = QsSettingsCache.getInt(context, Settings.System.QS_LAYOUT_ROWS_LANDSCAPE, 2);
++            valueQQS = QsSettingsCache.getInt(context, Settings.System.QQS_LAYOUT_ROWS_LANDSCAPE, 1);
+         }
+         return Math.max(value, valueQQS);
+     }
+@@ -84,58 +73,43 @@ public class TileUtils {
+         final int QS_ROWS_MIN = 1;
+         int value = QS_ROWS_MIN;
+         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+-            value = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QQS_LAYOUT_ROWS,
+-                    2, UserHandle.USER_CURRENT);
++            value = QsSettingsCache.getInt(context, Settings.System.QQS_LAYOUT_ROWS, 2);
+         } else {
+-            value = Settings.System.getIntForUser(
+-                    context.getContentResolver(), Settings.System.QQS_LAYOUT_ROWS_LANDSCAPE,
+-                    1, UserHandle.USER_CURRENT);
++            value = QsSettingsCache.getInt(context, Settings.System.QQS_LAYOUT_ROWS_LANDSCAPE, 1);
+         }
+         return Math.max(QS_ROWS_MIN, value);
+     }
+ 
+     public static boolean getQSTileLabelHide(Context context) {
+-        return Settings.System.getIntForUser(context.getContentResolver(),
+-                Settings.System.QS_TILE_LABEL_HIDE,
+-                0, UserHandle.USER_CURRENT) != 0;
++        return QsSettingsCache.getInt(context, Settings.System.QS_TILE_LABEL_HIDE, 0) != 0;
+     }
+ 
+     public static float getQSTileLabelSize(Context context) {
+-        int labelSize = Settings.System.getIntForUser(context.getContentResolver(),
+-                Settings.System.QS_TILE_LABEL_SIZE,
+-                14, UserHandle.USER_CURRENT);
++        int labelSize = QsSettingsCache.getInt(context, Settings.System.QS_TILE_LABEL_SIZE, 14);
+         if (getQsUiStyle(context) != 0) labelSize = labelSize - 2;
+         return (float) labelSize;
+     }
+ 
+     public static boolean getQSTileVerticalLayout(Context context) {
+-        return Settings.System.getIntForUser(context.getContentResolver(),
+-                Settings.System.QS_TILE_VERTICAL_LAYOUT,
+-                0, UserHandle.USER_CURRENT) != 0;
++        return QsSettingsCache.getInt(context, Settings.System.QS_TILE_VERTICAL_LAYOUT, 0) != 0;
+     }
+ 
+    public static int getQsUiStyle(Context context) {
+-       return Settings.System.getIntForUser(context.getContentResolver(),
+-                Settings.System.QS_TILE_UI_STYLE,
+-                0, UserHandle.USER_CURRENT);
++       return QsSettingsCache.getInt(context, Settings.System.QS_TILE_UI_STYLE, 0);
+    }
+ 
+    public static boolean isCompactQSMediaPlayerEnforced(Context context) {
+-        return Settings.System.getIntForUser(context.getContentResolver(),
+-            "qs_compact_media_player_mode",0, UserHandle.USER_CURRENT) != 0;
++        return QsSettingsCache.getInt(context, "qs_compact_media_player_mode", 0) != 0;
+    }
+ 
+    public static boolean canShowSplitShade(Context context) {
+-        return Settings.System.getIntForUser(context.getContentResolver(),
+-            "qs_split_shade_enabled",0, UserHandle.USER_CURRENT) != 0
++        return QsSettingsCache.getInt(context, "qs_split_shade_enabled", 0) != 0
+             && context.getResources().getConfiguration().orientation
+             == Configuration.ORIENTATION_LANDSCAPE;
+    }
+ 
+    public static boolean isQsWidgetsEnabled(Context context) {
+-        return Settings.System.getIntForUser(context.getContentResolver(), 
+-            "qs_widgets_enabled",0, UserHandle.USER_CURRENT) != 0;
++        return QsSettingsCache.getInt(context, "qs_widgets_enabled", 0) != 0;
+    }
+ 
+    public static boolean canShowQsWidgets(Context context) {
+diff --git a/packages/SystemUI/src/com/android/systemui/qs/VerticalSlider.kt b/packages/SystemUI/src/com/android/systemui/qs/VerticalSlider.kt
+index f8ac9ab..10a2da3 100644
+--- a/packages/SystemUI/src/com/android/systemui/qs/VerticalSlider.kt
++++ b/packages/SystemUI/src/com/android/systemui/qs/VerticalSlider.kt
+@@ -25,7 +25,6 @@ import android.graphics.PorterDuff
+ import android.graphics.PorterDuffXfermode
+ import android.graphics.RectF
+ import android.os.Handler
+-import android.os.UserHandle
+ import android.provider.Settings
+ import android.util.AttributeSet
+ import android.view.MotionEvent
+@@ -242,8 +241,7 @@ open class VerticalSlider(context: Context, attrs: AttributeSet? = null) : CardV
+     }
+ 
+     fun qsPaneStyle(): Int {
+-        return Settings.System.getIntForUser(context.contentResolver, 
+-            Settings.System.QS_PANEL_STYLE, 0, UserHandle.USER_CURRENT)
++        return QsSettingsCache.getInt(context, Settings.System.QS_PANEL_STYLE, 0)
+     }
+ 
+     fun translucentQsStyle(): Boolean {
+-- 
+2.54.0 (Apple Git-157)
+
