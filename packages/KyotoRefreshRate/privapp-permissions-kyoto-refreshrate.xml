@@ -2,5 +2,6 @@
 <permissions>
     <privapp-permissions package="org.lineageos.kyoto.refreshrate">
         <permission name="android.permission.WRITE_SECURE_SETTINGS" />
+        <permission name="android.permission.MANAGE_NOTIFICATION_LISTENERS" />
     </privapp-permissions>
 </permissions>

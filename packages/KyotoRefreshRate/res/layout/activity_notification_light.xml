@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pixel-style settings page for the notification LED. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/navigate_up"
+        android:src="@drawable/ic_arrow_back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="28dp"
+                android:text="@string/led_title"
+                android:textSize="36sp"
+                android:fontFamily="google-sans"
+                android:textColor="?android:attr/textColorPrimary"
+                android:accessibilityHeading="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/led_description"
+                android:textSize="14sp"
+                android:fontFamily="google-sans-text"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <!-- Main switch, Pixel "Use ..." bar -->
+            <LinearLayout
+                android:id="@+id/main_switch_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:minHeight="72dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/main_switch_background"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/led_use"
+                    android:textSize="20sp"
+                    android:fontFamily="google-sans"
+                    android:textColor="?android:attr/textColorPrimary" />
+                <Switch
+                    android:id="@+id/main_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false" />
+            </LinearLayout>
+
+            <!-- Shown when the listener has no notification access -->
+            <LinearLayout
+                android:id="@+id/access_row"
+                style="@style/RefreshRate.Row"
+                android:paddingStart="24dp"
+                android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView style="@style/RefreshRate.RowTitle" android:text="@string/led_access_title" />
+                    <TextView style="@style/RefreshRate.RowSummary" android:text="@string/led_access_summary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView style="@style/Led.Header" android:text="@string/led_pattern" />
+
+                <LinearLayout android:id="@+id/row_pulse" style="@style/RefreshRate.Row">
+                    <RadioButton android:id="@+id/radio_pulse" style="@style/RefreshRate.Radio" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView style="@style/RefreshRate.RowTitle" android:text="@string/led_pulse" />
+                        <TextView style="@style/RefreshRate.RowSummary" android:text="@string/led_pulse_desc" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/row_blink" style="@style/RefreshRate.Row">
+                    <RadioButton android:id="@+id/radio_blink" style="@style/RefreshRate.Radio" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView style="@style/RefreshRate.RowTitle" android:text="@string/led_blink" />
+                        <TextView style="@style/RefreshRate.RowSummary" android:text="@string/led_blink_desc" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView style="@style/Led.Header" android:text="@string/led_brightness" />
+
+                <SeekBar
+                    android:id="@+id/brightness"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp" />
+
+                <LinearLayout android:id="@+id/preview" style="@style/RefreshRate.Row"
+                    android:paddingStart="24dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView style="@style/RefreshRate.RowTitle" android:text="@string/led_preview" />
+                        <TextView style="@style/RefreshRate.RowSummary" android:text="@string/led_preview_desc" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/dnd_row" style="@style/RefreshRate.Row"
+                    android:paddingStart="24dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView style="@style/RefreshRate.RowTitle" android:text="@string/led_dnd" />
+                        <TextView style="@style/RefreshRate.RowSummary" android:text="@string/led_dnd_desc" />
+                    </LinearLayout>
+                    <Switch
+                        android:id="@+id/dnd_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false" />
+                </LinearLayout>
+
+                <TextView style="@style/Led.Header" android:text="@string/led_apps" />
+
+                <TextView
+                    android:id="@+id/apps_loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/led_apps_loading"
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <LinearLayout
+                    android:id="@+id/app_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

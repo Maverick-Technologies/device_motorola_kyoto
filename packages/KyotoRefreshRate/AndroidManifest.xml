@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Refresh rate settings page for kyoto. Injects "Refresh rate" at the top of
-     Settings > Display with a live summary. Privileged system_ext app, platform signed. -->
+<!-- Display settings pages for kyoto. Injects "Refresh rate" at the top of Settings > Display
+     and "Notification light" below it, each with a live summary. Privileged system_ext app,
+     platform signed. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.lineageos.kyoto.refreshrate">
 
+
     <!-- peak_refresh_rate / min_refresh_rate are hidden System settings. -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Self-grant of notification listener access (platform signed build only) -->
+    <uses-permission android:name="android.permission.MANAGE_NOTIFICATION_LISTENERS" />
+
+    <!-- App list on the Notification light page -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
 
     <application
         android:label="@string/app_name"
@@ -32,6 +45,44 @@
             <meta-data android:name="com.android.settings.icon"
                 android:resource="@drawable/ic_refresh_rate" />
         </activity>
+
+        <activity
+            android:name=".NotificationLightActivity"
+            android:label="@string/led_title"
+            android:exported="true"
+            android:theme="@style/Theme.RefreshRate">
+            <intent-filter>
+                <action android:name="com.android.settings.action.IA_SETTINGS" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                android:value="com.android.settings.category.ia.display" />
+            <meta-data android:name="com.android.settings.order"
+                android:value="-999" />
+            <meta-data android:name="com.android.settings.title"
+                android:resource="@string/led_title" />
+            <meta-data android:name="com.android.settings.summary_uri"
+                android:value="content://org.lineageos.kyoto.refreshrate.summary/getLedSummary" />
+            <meta-data android:name="com.android.settings.icon"
+                android:resource="@drawable/ic_notification_light" />
+        </activity>
+
+        <service
+            android:name=".LedNotificationListener"
+            android:label="@string/led_listener_label"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name=".RefreshRateSummaryProvider"

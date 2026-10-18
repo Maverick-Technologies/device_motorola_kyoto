@@ -1,0 +1,4 @@
+# Notification light: KyotoRefreshRate (platform_app) publishes the wanted LED state in
+# sys.kyoto.led; init.kyoto.rc programs /sys/class/leds/charging from it.
+system_internal_prop(kyoto_led_prop)
+set_prop(platform_app, kyoto_led_prop)

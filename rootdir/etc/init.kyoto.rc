@@ -26,3 +26,255 @@ on boot && property:ro.vendor.hw.nfc=ese_nxp
 
 on boot && property:ro.vendor.hw.nfc=true
     start vendor.nfc_hal_service
+
+# Notification light (KyotoRefreshRate): the single LED above the display is MT6360 channel 1,
+# /sys/class/leds/charging. Both patterns use the MT6360 breath engine; its timing nodes
+# (list_time selectors: 0 = 0.125 s, +0.25 s per step) exist only while breath_mode is the
+# trigger, so they are written after selecting it.
+on property:sys.kyoto.led=off
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 0
+
+# Pulse: 0.75 s fade in, 0.375 s on, 0.75 s fade out, 0.375 s off
+on property:sys.kyoto.led=pulse_1
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 1
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_2
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 2
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_3
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 3
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_4
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 4
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_5
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 5
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_6
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 6
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_7
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 7
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_8
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 8
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_9
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 9
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_10
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 10
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_11
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 11
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=pulse_12
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 12
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 1
+    write /sys/class/leds/charging/tr2 1
+    write /sys/class/leds/charging/ton 1
+    write /sys/class/leds/charging/tf1 1
+    write /sys/class/leds/charging/tf2 1
+    write /sys/class/leds/charging/toff 1
+
+# Blink: 0.25 s fade in, 0.125 s on, 0.25 s fade out, 0.375 s off
+on property:sys.kyoto.led=blink_1
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 1
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_2
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 2
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_3
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 3
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_4
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 4
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_5
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 5
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_6
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 6
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_7
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 7
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_8
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 8
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_9
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 9
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_10
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 10
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_11
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 11
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1
+on property:sys.kyoto.led=blink_12
+    write /sys/class/leds/charging/trigger none
+    write /sys/class/leds/charging/brightness 12
+    write /sys/class/leds/charging/trigger breath_mode
+    write /sys/class/leds/charging/tr1 0
+    write /sys/class/leds/charging/tr2 0
+    write /sys/class/leds/charging/ton 0
+    write /sys/class/leds/charging/tf1 0
+    write /sys/class/leds/charging/tf2 0
+    write /sys/class/leds/charging/toff 1

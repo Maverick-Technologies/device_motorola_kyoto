@@ -12,4 +12,24 @@
     <string name="mode_90_desc">Always smoothest, uses more battery</string>
     <string name="footer">A higher refresh rate can increase battery usage.</string>
     <string name="navigate_up">Navigate up</string>
+    <string name="led_title">Notification light</string>
+    <string name="led_summary_on">On</string>
+    <string name="led_summary_off">Off</string>
+    <string name="led_description">Use the light above the screen to show that you have new notifications while the screen is off.</string>
+    <string name="led_use">Use notification light</string>
+    <string name="led_access_title">Allow notification access</string>
+    <string name="led_access_summary">Needed to know when you have new notifications</string>
+    <string name="led_pattern">Pattern</string>
+    <string name="led_pulse">Pulse</string>
+    <string name="led_pulse_desc">Slowly fades in and out</string>
+    <string name="led_blink">Blink</string>
+    <string name="led_blink_desc">Quickly fades on and off about once a second</string>
+    <string name="led_brightness">Brightness</string>
+    <string name="led_preview">Preview</string>
+    <string name="led_preview_desc">Shows the light for 3 seconds</string>
+    <string name="led_dnd">Off during Do Not Disturb</string>
+    <string name="led_dnd_desc">Keep the light off while Do Not Disturb is on</string>
+    <string name="led_apps">Apps</string>
+    <string name="led_apps_loading">Loading apps…</string>
+    <string name="led_listener_label">Notification light</string>
 </resources>

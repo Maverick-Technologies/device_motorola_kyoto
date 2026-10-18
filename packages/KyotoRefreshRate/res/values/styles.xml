@@ -53,4 +53,19 @@
         <item name="android:fontFamily">google-sans-text</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
+
+    <style name="Led" />
+
+    <style name="Led.Header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">google-sans-text-medium</item>
+        <item name="android:textColor">?android:attr/colorAccent</item>
+        <item name="android:accessibilityHeading">true</item>
+    </style>
 </resources>
