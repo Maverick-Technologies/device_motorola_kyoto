@@ -1,2 +1,0 @@
-# kyoto system_ext policy. init sets debug.renderengine.backend from init.kyoto.rc;
-# debug_prop is writable by init in platform policy, so nothing extra is needed yet.

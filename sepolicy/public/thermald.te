@@ -1,0 +1,3 @@
+# MediaTek thermal daemon (/system/bin/thermald from stock T2RK33). Public so the stock
+# vendor policy's rules for thermald_31_0 (proc_thermal etc.) apply through the 31.0 mapping.
+type thermald, domain;

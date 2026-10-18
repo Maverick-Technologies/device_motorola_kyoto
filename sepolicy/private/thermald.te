@@ -1,0 +1,19 @@
+# MediaTek thermald: registers with /proc/driver/thermal (clsd_pid, clmutt_tmd_pid) to receive
+# thermal-shutdown and modem/Wi-Fi throttle signals. Based on LineageOS
+# device/mediatek/sepolicy_vndr bsp/plat_private/thermald.te; vendor-label access
+# (proc_thermal) comes from the stock vendor policy via thermald_31_0.
+type thermald_exec, system_file_type, exec_type, file_type;
+typeattribute thermald coredomain;
+init_daemon_domain(thermald)
+
+binder_use(thermald)
+binder_call(thermald, system_server)
+allow thermald activity_service:service_manager find;
+
+allow thermald sysfs_net:dir search;
+allow thermald proc_net:file r_file_perms;
+allow thermald shell_exec:file rx_file_perms;
+allow thermald toolbox_exec:file rx_file_perms;
+allow thermald devpts:chr_file rw_file_perms;
+allow thermald self:netlink_route_socket { create setopt bind getattr write nlmsg_read read nlmsg_write };
+allow thermald self:capability net_admin;

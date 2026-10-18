@@ -1,0 +1,2 @@
+# Private half of the API 31 system_ext snapshot (declarations only).
+type thermald_exec, system_file_type, exec_type, file_type;

@@ -111,8 +111,12 @@ BOARD_AVB_ENABLE := false
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_SYSTEM_EXT_PROP += $(DEVICE_PATH)/system_ext.prop
 
-# SELinux: vendor policy is prebuilt (plat_sepolicy_vers 31.0)
+# SELinux: vendor policy is prebuilt (plat_sepolicy_vers 31.0). System-side MediaTek/Motorola
+# daemons the vendor policy expects (thermald_31_0) are declared public here, and the API 31
+# snapshot in sepolicy/prebuilt generates the 31.0 mapping so the vendor's rules apply.
+SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+BOARD_SYSTEM_EXT_PREBUILT_DIR := $(DEVICE_PATH)/sepolicy/prebuilt
 SELINUX_IGNORE_NEVERALLOWS := true
 
 # VINTF: stock vendor targets FCM level 5 (Android 11 launch)
