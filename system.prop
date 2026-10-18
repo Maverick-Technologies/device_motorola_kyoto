@@ -1,3 +1,6 @@
 # kyoto system properties.
 # Display density, panel and refresh defaults come from the prebuilt vendor
 # (ro.sf.lcd_density=400, config_defaultPeakRefreshRate=90).
+
+# Settings: expressive design preview (SettingsLib SettingsThemeHelper)
+persist.sys.is_expressive_design_enabled=1
