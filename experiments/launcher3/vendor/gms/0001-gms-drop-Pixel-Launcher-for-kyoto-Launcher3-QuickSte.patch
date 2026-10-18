@@ -1,0 +1,57 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Yash Dayani <52958495+YashDayani@users.noreply.github.com>
+Date: Sun, 18 Oct 2026 13:15:54 +0530
+Subject: [PATCH] gms: drop Pixel Launcher for kyoto (Launcher3 QuickStep
+ instead)
+
+kyoto uses Launcher3 QuickStep built from source so the Android 15
+"Bubble" app shortcut (enable_bubble_anything) can be enabled; the
+prebuilt NexusLauncherRelease has it compiled out and overrides
+Launcher3QuickStep.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ gms_full.mk | 1 -
+ gms_mini.mk | 1 -
+ gms_pico.mk | 1 -
+ 3 files changed, 3 deletions(-)
+
+diff --git a/gms_full.mk b/gms_full.mk
+index 77460ce..39ce9e9 100644
+--- a/gms_full.mk
++++ b/gms_full.mk
+@@ -142,7 +142,6 @@ PRODUCT_PACKAGES += \
+     AvatarPickerGoogle \
+     GoogleFeedback \
+     GoogleServicesFramework \
+-    NexusLauncherRelease \
+     SetupWizardPixelPrebuilt \
+     QuickAccessWallet \
+     StorageManagerGoogle \
+diff --git a/gms_mini.mk b/gms_mini.mk
+index ce8add7..a0c2829 100644
+--- a/gms_mini.mk
++++ b/gms_mini.mk
+@@ -110,7 +110,6 @@ PRODUCT_PACKAGES += \
+     AvatarPickerGoogle \
+     GoogleFeedback \
+     GoogleServicesFramework \
+-    NexusLauncherRelease \
+     SetupWizardPixelPrebuilt \
+     QuickAccessWallet \
+     WallpaperPickerGoogleRelease
+diff --git a/gms_pico.mk b/gms_pico.mk
+index 018dde0..aad25e7 100644
+--- a/gms_pico.mk
++++ b/gms_pico.mk
+@@ -103,7 +103,6 @@ PRODUCT_PACKAGES += \
+     AvatarPickerGoogle \
+     GoogleFeedback \
+     GoogleServicesFramework \
+-    NexusLauncherRelease \
+     SetupWizardPixelPrebuilt \
+     QuickAccessWallet \
+     WallpaperPickerGoogleRelease
+-- 
+2.54.0 (Apple Git-157)
+

@@ -5,9 +5,11 @@
 # (e.g. patches/frameworks/base/0001-*.patch -> frameworks/base). A patch that is already
 # applied is skipped, so this is safe to re-run; `repo sync` drops the commits again.
 #
-# Usage from the source root:  bash device/motorola/kyoto/patches/apply.sh
+# Usage from the source root:  bash device/motorola/kyoto/patches/apply.sh [patch root]
+# (patch root defaults to device/motorola/kyoto/patches; experiments pass their own folder)
 set -euo pipefail
-HERE=device/motorola/kyoto/patches
+HERE=${1:-device/motorola/kyoto/patches}
+HERE=${HERE%/}
 
 [[ -d $HERE ]] || { echo "Run from the source root ($HERE missing)"; exit 1; }
 

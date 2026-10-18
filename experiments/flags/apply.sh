@@ -8,12 +8,15 @@
 #                    (qs_ui_refactor + qs_ui_refactor_compose_fragment)
 #   volume-redesign  new volume dialog (systemui/volume/dialog) instead of VolumeDialogImpl;
 #                    EvoX's own volume dialog options do not apply to it
+#   bubble-anything  "Bubble" in the app long-press menu (Launcher3 QuickStep, WM Shell);
+#                    the prebuilt Pixel Launcher ignores it, see experiments/launcher3
 #
 # Values are READ_WRITE, so a feature can be switched off on the phone without a rebuild:
 #   adb shell su -c 'aflags disable com.android.systemui.volume_redesign' && adb reboot
+# (bubble-anything: com.android.wm.shell.enable_bubble_anything)
 #
 # Usage from the source root (each feature defaults to on):
-#   COMPOSE_QS=off VOLUME_REDESIGN=on bash device/motorola/kyoto/experiments/flags/apply.sh
+#   COMPOSE_QS=off VOLUME_REDESIGN=on BUBBLE_ANYTHING=on bash device/motorola/kyoto/experiments/flags/apply.sh
 set -euo pipefail
 HERE=device/motorola/kyoto/experiments/flags
 BP1A=build/release/aconfig/bp1a
@@ -27,6 +30,7 @@ enabled() {
   case $1 in
     compose-qs) [[ ${COMPOSE_QS:-on} != off ]] ;;
     volume-redesign) [[ ${VOLUME_REDESIGN:-on} != off ]] ;;
+    bubble-anything) [[ ${BUBBLE_ANYTHING:-on} != off ]] ;;
     *) return 1 ;;
   esac
 }
